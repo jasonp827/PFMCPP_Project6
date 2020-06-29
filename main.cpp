@@ -19,6 +19,7 @@ Create a branch named Part2
 
 #include <iostream>
 #include <string>
+#include <vector>
 struct T
 {
     T(int v, const char* namee)  : //1
@@ -31,13 +32,10 @@ struct T
 
 struct ComparingMachine                              //4
 {
-    T* compare(T* a, T* b) //5
+    const T* compare(const T& a, const T& b) //5
     {
-        if (a != nullptr && b != nullptr)
-        {
-            if( a->value < b->value ) return a;
-            if( a->value > b->value ) return b;
-        }
+        if( a.value < b.value ) return &a;
+        if( a.value > b.value ) return &b;
         return nullptr;
     }
 };
@@ -45,48 +43,39 @@ struct ComparingMachine                              //4
 struct U
 {
     float bing { 4.3f }, boom { 5.6f };
-    float poodlyDoodly(float* updatedVal)     //12
+    float poodlyDoodly(const float& updatedVal)     //12
     {
-        if (updatedVal != nullptr)
+        std::cout << "U's bing value: " << this->bing << std::endl;
+        this->bing = updatedVal;
+        std::cout << "U's bing updated value: " << this->bing << std::endl;
+        while( std::abs(this->boom - this->bing) > 0.001f )
         {
-            std::cout << "U's bing value: " << this->bing << std::endl;
-            this->bing = *updatedVal;
-            std::cout << "U's bing updated value: " << this->bing << std::endl;
-            while( std::abs(this->boom - this->bing) > 0.001f )
-            {
             /*
-             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-                this->boom = (this->boom - this->bing)/2;
-            }
-            std::cout << "U's boom updated value: " << this->boom << std::endl;
-            return this->boom * this->bing;
+            write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+            */
+            this->boom = (this->boom - this->bing)/2;
         }
-        return 0;
+        std::cout << "U's boom updated value: " << this->boom << std::endl;
+        return this->boom * this->bing;
     }
 };
 
 struct DiddlyItaly
 {
-    static float noodlyOodly(U* that, float* updatedVal )        //10
+    static float noodlyOodly(U& that, const float& updatedVal )        //10
     {
-        if (that != nullptr && updatedVal != nullptr)
+        std::cout << "U's bing value: " << that.bing << std::endl;
+        that.bing = updatedVal;
+        std::cout << "U's bing updated value: " << that.bing << std::endl;
+        while( std::abs(that.boom - that.bing) > 0.001f )
         {
-            std::cout << "U's bing value: " << that->bing << std::endl;
-            that->bing = *updatedVal;
-            std::cout << "U's bing updated value: " << that->bing << std::endl;
-            while( std::abs(that->boom - that->bing) > 0.001f )
-            {
-            /*
+        /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-                that->boom = (that->boom - that->bing)/2;
-            }
-            std::cout << "U's boom updated value: " << that->boom << std::endl;
-            return that->boom * that->bing;
+        */
+            that.boom = (that.boom - that.bing)/2;
         }
-        return 0;
-
+        std::cout << "U's boom updated value: " << that.boom << std::endl;
+        return that.boom * that.bing;
     }
 };
         
@@ -110,7 +99,7 @@ int main()
     T badaBoom( 5, "!");                                             //6
     
     ComparingMachine f;                                            //7
-    auto* smaller = f.compare(&badaBing, &badaBoom); 
+    auto* smaller = f.compare(badaBing, badaBoom); 
     
     if (smaller != nullptr)
     {
@@ -124,16 +113,8 @@ int main()
     
     U waddleDee;
     float updatedValue = 5.f;
-    std::cout << "[static func] waddleDee's multiplied values: " << DiddlyItaly::noodlyOodly( &waddleDee, &updatedValue) << std::endl;                  //11
+    std::cout << "[static func] waddleDee's multiplied values: " << DiddlyItaly::noodlyOodly( waddleDee, updatedValue) << std::endl;                  //11
     
     U scrabbleTabble;
-    std::cout << "[member func] scrabbleTabble's multiplied values: " << scrabbleTabble.poodlyDoodly( &updatedValue ) << std::endl;
+    std::cout << "[member func] scrabbleTabble's multiplied values: " << scrabbleTabble.poodlyDoodly( updatedValue ) << std::endl;
 }
-
-        
-        
-        
-        
-        
-        
-        
