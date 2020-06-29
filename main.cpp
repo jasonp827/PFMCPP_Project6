@@ -56,46 +56,72 @@ Purpose:  This project will show you the difference between member functions and
 #include <string>
 struct T
 {
-    T(<#type name#> v, const char* <#variable name#>)   //1
-    //2
-    //3
+    T(int v, const char* namee)  : //1
+        value(v),
+        name(namee)
+        {}
+    int value ;
+    std::string name;
 };
 
-struct <#structName1#>                                //4
+struct ComparingMachine                              //4
 {
-    <#type name#> compare(<#type name#> a, <#type name#> b) //5
+    T* compare(T* a, T* b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if (a != nullptr && b != nullptr)
+        {
+            if( a->value < b->value ) return a;
+            if( a->value > b->value ) return b;
+        }
         return nullptr;
     }
 };
 
 struct U
 {
-    float <#name1#> { 0 }, <#name2#> { 0 };
-    <#returnType#> <#memberFunction#>(<#type name#>* <#updatedValue#>)      //12
+    float bing { 4.3f }, boom { 5.6f };
+    float poodlyDoodly(float* updatedVal)     //12
     {
-        
-    }
-};
-
-struct <#structname2#>
-{
-    static <#returntype#> <#staticFunctionA#>(U* that, <#type name#>* <#updatedValue#> )        //10
-    {
-        std::cout << "U's <#name1#> value: " << that-><#name1#> << std::endl;
-        that-><#name1#> = <#updatedValue#>;
-        std::cout << "U's <#name1#> updated value: " << that-><#name1#> << std::endl;
-        while( std::abs(that-><#name2#> - that-><#name1#>) > 0.001f )
+        if (updatedVal != nullptr)
         {
+            std::cout << "U's bing value: " << this->bing << std::endl;
+            this->bing = *updatedVal;
+            std::cout << "U's bing updated value: " << this->bing << std::endl;
+            while( std::abs(this->boom - this->bing) > 0.001f )
+            {
             /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
              */
-            that-><#name2#> += ;
+                this->boom = (this->boom - this->bing)/2;
+            }
+            std::cout << "U's boom updated value: " << this->boom << std::endl;
+            return this->boom * this->bing;
         }
-        std::cout << "U's <#name2#> updated value: " << that-><#name2#> << std::endl;
-        return that-><#name2#> * that-><#name1#>;
+        return 0;
+    }
+};
+
+struct DiddlyItaly
+{
+    static float noodlyOodly(U* that, float* updatedVal )        //10
+    {
+        if (that != nullptr && updatedVal != nullptr)
+        {
+            std::cout << "U's bing value: " << that->bing << std::endl;
+            that->bing = *updatedVal;
+            std::cout << "U's bing updated value: " << that->bing << std::endl;
+            while( std::abs(that->boom - that->bing) > 0.001f )
+            {
+            /*
+             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+             */
+                that->boom = (that->boom - that->bing)/2;
+            }
+            std::cout << "U's boom updated value: " << that->boom << std::endl;
+            return that->boom * that->bing;
+        }
+        return 0;
+
     }
 };
         
@@ -115,19 +141,28 @@ struct <#structname2#>
 
 int main()
 {
-    T <#name1#>( , );                                             //6
-    T <#name2#>( , );                                             //6
+    T badaBing( 4, "@");                                             //6
+    T badaBoom( 5, "!");                                             //6
     
-    <#structName1#> f;                                            //7
-    auto* smaller = f.compare( , );                              //8
-    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+    ComparingMachine f;                                            //7
+    auto* smaller = f.compare(&badaBing, &badaBoom); 
     
-    U <#name3#>;
+    if (smaller != nullptr)
+    {
+        std::cout << "the smaller one is << " << smaller->name << std::endl;
+    }            
+    else
+    {
+        std::cout << badaBing.value << " is equal to " <<  badaBoom.value << "\n";  
+    }
+    
+    
+    U waddleDee;
     float updatedValue = 5.f;
-    std::cout << "[static func] <#name3#>'s multiplied values: " << <#structname2#>::<#staticFunctionA#>( , ) << std::endl;                  //11
+    std::cout << "[static func] waddleDee's multiplied values: " << DiddlyItaly::noodlyOodly( &waddleDee, &updatedValue) << std::endl;                  //11
     
-    U <#name4#>;
-    std::cout << "[member func] <#name4#>'s multiplied values: " << <#name4#>.<#memberFunction#>( &updatedValue ) << std::endl;
+    U scrabbleTabble;
+    std::cout << "[member func] scrabbleTabble's multiplied values: " << scrabbleTabble.poodlyDoodly( &updatedValue ) << std::endl;
 }
 
         
